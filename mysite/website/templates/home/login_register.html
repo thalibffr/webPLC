@@ -7,24 +7,39 @@
     <title>Login</title>
 </head>
 <body>
-    <form method="POST" action="">
-        {% csrf_token %}
-
-        <label>Username:</label>
-        <input type="text" name="username" placeholder="Enter Username" />
-
-        {% if messages %}
-            <ul class="messages">
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-            </ul>
-        {% endif %}
-
-        <label>Password:</label>
-        <input type="password" name="password" placeholder="Enter Password" />
-
-        <input type="submit" value="login" />
-    </form>
+    {% if page == 'login' %}
+    <div>
+        <form method="POST" action="">
+            {% csrf_token %}
+    
+            <label>Username:</label>
+            <input type="text" name="username" placeholder="Enter Username" />
+    
+            {% if messages %}
+                <ul class="messages">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+    
+            <label>Password:</label>
+            <input type="password" name="password" placeholder="Enter Password" />
+    
+            <input type="submit" value="login" />
+        </form>
+    </div>
+    
+    {% else %}
+    <div>
+        <form method="POST" action="">
+            {% csrf_token %}
+    
+            <input type="submit" value="Register" />
+        </form>
+        <p>Already signed up yet?</p>
+        <a href="{% url 'login' %}">Login</a>
+    </div>
+    {% endif %}
 </body>
 </html>

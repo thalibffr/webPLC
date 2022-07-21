@@ -17,6 +17,9 @@ from .form import RoomForm
 # ]
 
 def loginPage(request):
+    page = 'login'
+    if request.user.is_authenticated:
+        return redirect('index')
 
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -35,13 +38,16 @@ def loginPage(request):
         else:
             messages.error(request, 'Username or Password does not exist')
 
-    context = {}
+    context = {'page': page}
     return render(request, 'home/login_register.html', context)
 
 def logoutUser(request):
     logout(request)
     return redirect('index')
 
+def registerPage(request):
+    page = 'register'
+    return render(request, 'home/login_register.html')
 
 def index(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
@@ -59,7 +65,9 @@ def index(request):
 
 def room(request, pk):
     room = Room.objects.get(id=pk)
-    return render(request, 'home/room.html')
+    messages = room.massage_set.all()
+    context = {'room': room, 'messages': messages}
+    return render(request, 'home/room.html', context)
 
 def createRoom(request):
     form = RoomForm()
