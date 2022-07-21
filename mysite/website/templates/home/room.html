@@ -7,6 +7,7 @@
     <title>Room</title>
 </head>
 <body>
+    {% include 'navbar.html' %}
 
     <h1>{{room.name}}</h1>
 
@@ -16,13 +17,22 @@
         <h3>Conversation</h3>
         <hr>
 
-        {% for message in messages %}
+        {% for message in room_messages %}
             <div>
-                <small>@{{message.user}} {{message.created}}</small>
+                <small>@{{message.user}} {{message.created|timesince}} ago</small>
+                <p>{{message.body}}</p>
             </div>
         {% endfor %}
     </div>
 
+    {% if request.user.is_authenticated %}
+    <div class="comment-form">
+        <form method="POST" action="">
+            {% csrf_token %}
+            <input type="text" name="body" placeholder="Write your message" />
+        </form>
+    </div>
+    {% endif %}
     
 </body>
 </html>
